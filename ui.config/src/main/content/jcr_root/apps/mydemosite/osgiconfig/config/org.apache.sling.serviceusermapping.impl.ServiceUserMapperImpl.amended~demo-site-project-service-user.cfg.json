@@ -1,0 +1,4 @@
+{
+  "service.ranking": "0",
+  "user.mapping": ["my-demo-site.core:demo-site-content-reader-service-mapper=demo-site-content-reader-service"]
+}

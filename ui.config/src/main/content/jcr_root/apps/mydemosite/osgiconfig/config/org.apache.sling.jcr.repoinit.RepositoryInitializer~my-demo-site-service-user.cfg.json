@@ -1,0 +1,5 @@
+{
+  "scripts": [
+    "create service user demo-site-content-reader-service\nset ACL on /content/mydemosite, /content/experience-fragments/mydemosite\nallow jcr:read for demo-site-content-reader-service\nend"
+  ]
+}

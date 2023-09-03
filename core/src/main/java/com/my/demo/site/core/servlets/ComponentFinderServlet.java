@@ -14,24 +14,21 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.apache.sling.api.servlets.ServletResolverConstants.SLING_SERVLET_METHODS;
 import static org.apache.sling.api.servlets.ServletResolverConstants.SLING_SERVLET_PATHS;
 
 @Component(service = Servlet.class, immediate = true, property = {
         SLING_SERVLET_PATHS+"="+"/bin/task/componentFinder",
-        SLING_SERVLET_METHODS+"="+ HttpConstants.METHOD_GET
+        SLING_SERVLET_METHODS+"="+ HttpConstants.METHOD_POST
 })
 public class ComponentFinderServlet extends SlingAllMethodsServlet {
 
-    /**
-     * type=nt:unstructured
-     * path=/content/we-retail/us/en
-     * 1_property=sling:resourceType
-     * 1_property.value=weretail/components/content/button
-     * p.limit=-1
-     */
 
+    /**
+     * The ComponentFinderService.
+     */
     @Reference
     ComponentFinderService componentFinderService;
 
@@ -39,9 +36,18 @@ public class ComponentFinderServlet extends SlingAllMethodsServlet {
     @Override
     protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
 
+        String rootPath ="";
+        String resourceType ="";
+        if(Objects.nonNull(request.getParameter("rootPath")) &&
+                Objects.nonNull(request.getParameter("resourceType"))){
+            rootPath = request.getParameter("rootPath");
+            resourceType = request.getParameter("resourceType");
 
-        Map<String,String> predicateMap = componentFinderService.createPredicateMap();
-        response.getWriter().write("HELLO");
+            HashMap<String,Integer>  resultMap = componentFinderService.getComponentUsageCount(rootPath,resourceType);
+            response.getWriter().write(resultMap.toString());
+        }
+
+
 
     }
 
