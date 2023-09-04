@@ -1,0 +1,5 @@
+{
+  "jcr:primaryType": "nt:unstructured",
+  "sling:resourceType": "mydemosite/components/experiencefragment",
+  "fragmentVariationPath": "/content/experience-fragments/mydemosite/us/en/site/header/master"
+}

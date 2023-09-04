@@ -40,7 +40,7 @@ public class ComponentFinderServiceImpl implements ComponentFinderService {
      * The ResourceResolverUtil service.
      */
     @Reference
-    ResourceResolverUtil resourceResolverUtil;
+    private ResourceResolverUtil resourceResolverUtil;
 
     /**
      * createPredicateMap method creates the Predicate Map
@@ -59,9 +59,7 @@ public class ComponentFinderServiceImpl implements ComponentFinderService {
      *      p.limit=-1
      *      group.p.or=true
      */
-
-    @Override
-    public Map<String, String> createPredicateMap(String rootPath, String resourceType) {
+    private Map<String, String> createPredicateMap(String rootPath, String resourceType) {
 
         LOGGER.info("::: Start of createPredicateMap method :::");
         Map<String, String> predicateMap = new HashMap<>();
@@ -84,9 +82,7 @@ public class ComponentFinderServiceImpl implements ComponentFinderService {
      * @param map
      * @return SearchResult
      */
-
-    @Override
-    public SearchResult getQueryResult(Map<String, String> map) {
+    private SearchResult getQueryResult(Map<String, String> map) {
 
         LOGGER.info("::: Start of getQueryResult method :::");
         ResourceResolver resourceResolver = resourceResolverUtil.getResourceResolver(
@@ -109,6 +105,7 @@ public class ComponentFinderServiceImpl implements ComponentFinderService {
      * @param resourceType
      * @return HashMap<String,Integer>
      */
+    @Override
     public HashMap<String,Integer> getComponentUsageCount(String rootPath, String resourceType) {
 
         LOGGER.info("::: Start of getComponentUsageCount method :::");
@@ -127,7 +124,6 @@ public class ComponentFinderServiceImpl implements ComponentFinderService {
      * @param resourceType
      * @param resItem
      */
-
     private void getPageComponents(String rootPath, String resourceType, Map<String,Integer> resItem) {
 
         LOGGER.info("::: Start of getPageComponents method :::");
@@ -139,23 +135,23 @@ public class ComponentFinderServiceImpl implements ComponentFinderService {
             try {
                 if(hit.getResource().getResourceType().equals("mydemosite/components/experiencefragment")){
                     String fragmentVariationPath = hit.getResource().getValueMap().get("fragmentVariationPath", "");
-                    if(resItem.containsKey(pathSplitter(hit.getPath()))) {
-                        int counter = resItem.get(pathSplitter(hit.getPath()));
-                        resItem.put(pathSplitter(hit.getPath()), getComponentInExpFragment(fragmentVariationPath, resourceType, counter));
+                    if(resItem.containsKey(pathSplitter(hit.getResource().getPath()))) {
+                        int counter = resItem.get(pathSplitter(hit.getResource().getPath()));
+                        resItem.put(pathSplitter(hit.getResource().getPath()), getComponentInExpFragment(fragmentVariationPath, resourceType, counter));
                     } else {
-                        resItem.put(pathSplitter(hit.getPath()), getComponentInExpFragment(fragmentVariationPath, resourceType, 0));
+                        resItem.put(pathSplitter(hit.getResource().getPath()), getComponentInExpFragment(fragmentVariationPath, resourceType, 0));
                     }
                 } else if (hit.getResource().getResourceType().equals(resourceType)){
-                    if(resItem.containsKey(pathSplitter(hit.getPath()))){
-                        int counter = resItem.get(pathSplitter(hit.getPath()))+1;
-                        resItem.put(pathSplitter(hit.getPath()),counter);
+                    if(resItem.containsKey(pathSplitter(hit.getResource().getPath()))){
+                        int counter = resItem.get(pathSplitter(hit.getResource().getPath()))+1;
+                        resItem.put(pathSplitter(hit.getResource().getPath()),counter);
                     }
                     else{
-                        resItem.put(pathSplitter(hit.getPath()),1);
+                        resItem.put(pathSplitter(hit.getResource().getPath()),1);
                     }
                 }
             } catch (RepositoryException e) {
-                e.printStackTrace();
+                LOGGER.error("RepositoryException : {}",e.getMessage());
             }
         }
 
@@ -169,7 +165,6 @@ public class ComponentFinderServiceImpl implements ComponentFinderService {
      * @param count
      * @return count
      */
-
     private int getComponentInExpFragment(String path, String resourceType, int count ) {
 
         LOGGER.info("::: Start of getComponentInExpFragment method :::");
@@ -189,7 +184,6 @@ public class ComponentFinderServiceImpl implements ComponentFinderService {
             }
         }
         LOGGER.info("::: End of getComponentInExpFragment method :::");
-
         return count;
     }
 
@@ -199,8 +193,7 @@ public class ComponentFinderServiceImpl implements ComponentFinderService {
      * @param path
      * @return String
      */
-
-    public String pathSplitter(String path){
+    private String pathSplitter(String path){
         return path.split("/jcr:content")[0];
     }
 
