@@ -1,0 +1,6 @@
+{
+    "servletresolver.servletRoot": "-1",
+    "servletresolver.cacheSize": "1000",
+    "servletresolver.defaultExtensions": "html",
+    "servletresolver.paths": ["/bin/","/libs/","/apps/","/system/","/index.servlet","/login.servlet","/services/","/etc/commerce/searchpromote/feed/deleted.servlet","/graphql/","/mydemosite/"]
+}
