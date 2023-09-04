@@ -47,7 +47,7 @@ class ComponentFinderServletTest {
   private ArgumentCaptor<byte[]> outputStream;
 
   @Test
-  void doPostTest() throws ServletException, IOException {
+  void doGetTest() throws ServletException, IOException {
     String expectedResponse = IOUtils.toString(
         Objects.requireNonNull(getClass().getResourceAsStream(
             "/com/my/demo/site/core/servlets/ComponentFinderServlet/success_response.json")),
